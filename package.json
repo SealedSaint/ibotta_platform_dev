@@ -4,7 +4,7 @@
 	"description": "Ibotta Dev Project =========",
 	"main": "index.js",
 	"scripts": {
-		"build": "babel ./ --out-dir ./build --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+		"build": "babel ./ --out-dir ./build --ignore ./build,./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
 		"start": "npm run build && node ./build/index.js",
 		"test": "npm run build && node ./build/WordStore.test.js"
 	},
