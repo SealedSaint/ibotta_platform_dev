@@ -1,5 +1,5 @@
 import assert from 'assert'
-import WordStore, { areAnagrams } from './WordStore.class.js'
+import WordStore, { areAnagrams, isProperWord } from './WordStore.class.js'
 
 function mapsAreEqual(map1, map2) {
 	// Same keys
@@ -68,9 +68,6 @@ function testMapsAreEqual() {
 }
 testMapsAreEqual()
 
-
-const store = new WordStore()
-
 // Check areAnagrams
 function testAreAnagrams() {
 	// Varying sizes/words (matches and non-matches)
@@ -85,6 +82,22 @@ function testAreAnagrams() {
 	assert(!areAnagrams('abrakadabra', 'abrakadabr'), "'abrakadabra' and 'abrakadabr' are not anagrams")
 }
 testAreAnagrams()
+
+// Check isProperWord
+function testIsProperWord() {
+	assert(isProperWord('foo'), "'foo' is a proper word")
+	assert(isProperWord('computer'), "'computer' is a proper word")
+	assert(isProperWord('A'), "'A' is a proper word")
+	assert(isProperWord('TiGeR'), "'TiGeR' is a proper word")
+	assert(!isProperWord(' foo '), "' foo ' is NOT a proper word")
+	assert(!isProperWord('1234'), "'1234' is NOT a proper word")
+	assert(!isProperWord('comput3r'), "'comput3r' is NOT a proper word")
+	assert(!isProperWord('a word'), "'a word' is NOT a proper word")
+	assert(!isProperWord('bl_h'), "'bl_h' is NOT a proper word")
+}
+testIsProperWord()
+
+const store = new WordStore()
 
 // Check addWords (make sure anagramMap and sizeMap are populated appropriately)
 function testAddWords() {

@@ -1,28 +1,29 @@
 {
-	"name": "ibotta_platform_dev",
-	"version": "1.0.0",
-	"description": "Ibotta Dev Project =========",
-	"main": "index.js",
-	"scripts": {
-		"build": "babel ./ --out-dir ./build --ignore ./build,./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-		"start": "npm run build && node ./build/index.js",
-		"test": "npm run build && node ./build/WordStore.test.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/SealedSaint/ibotta_platform_dev.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/SealedSaint/ibotta_platform_dev/issues"
-	},
-	"homepage": "https://github.com/SealedSaint/ibotta_platform_dev#readme",
-	"dependencies": {
-		"express": "^4.16.1"
-	},
-	"devDependencies": {
-		"babel-cli": "^6.26.0",
-		"babel-preset-env": "^1.6.0"
-	}
+  "name": "ibotta_platform_dev",
+  "version": "1.0.0",
+  "description": "Ibotta Dev Project =========",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel ./ --out-dir ./build --ignore ./build,./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+    "start": "npm run build && node ./build/index.js",
+    "test": "npm run build && node ./build/WordStore.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SealedSaint/ibotta_platform_dev.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SealedSaint/ibotta_platform_dev/issues"
+  },
+  "homepage": "https://github.com/SealedSaint/ibotta_platform_dev#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0"
+  }
 }

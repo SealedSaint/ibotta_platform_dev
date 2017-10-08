@@ -112,3 +112,20 @@ export function areAnagrams(word1, word2) {
 	// If all counts are zero they had the same characters and are anagrams
 	return Object.values(charCounts).every(count => count === 0)
 }
+
+export function isProperWord(word) {
+	/* word (string): the word for which we are determining its proper-ness
+	 * return (boolean): whether or not the word is proper
+	*/
+	// Is a string
+	if(typeof word !== 'string') return false
+
+	// Has non-zero length
+	if(word.length < 1) return false
+
+	word = word.toLowerCase()
+	// Lower-case form has only characters [a-z]
+	if(/[^a-z]/.test(word)) return false
+
+	return true
+}
