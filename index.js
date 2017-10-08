@@ -1,5 +1,5 @@
-const express = require('express')
-const words = require('./words.route.js')
+import express from 'express'
+import words from './words.route.js'
 
 const app = express()
 

@@ -1,9 +1,9 @@
-const express = require('express')
-const router = express.Router()
-const WordStore = require('./WordStore.class.js')
+import express from 'express'
+import WordStore from './WordStore.class.js'
 
 const store = new WordStore()
 
+const router = express.Router()
 // Needs optional query param for limit to return
 router.get('/anagrams/:word.json', (req, res) => {
 	// Get anagrams for the passed in word here
@@ -31,4 +31,4 @@ router.delete('/words.json', (req, res) => {
 	store.deleteAll()
 })
 
-module.exports = router
+export default router

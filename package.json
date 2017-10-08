@@ -4,8 +4,9 @@
 	"description": "Ibotta Dev Project =========",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "babel ./ --out-dir ./build --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+		"start": "npm run build && node ./build/index.js",
+		"test": "npm run build && node ./build/WordStore.test.js"
 	},
 	"repository": {
 		"type": "git",
@@ -19,5 +20,9 @@
 	"homepage": "https://github.com/SealedSaint/ibotta_platform_dev#readme",
 	"dependencies": {
 		"express": "^4.16.1"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-preset-env": "^1.6.0"
 	}
 }
