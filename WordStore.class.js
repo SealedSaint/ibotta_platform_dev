@@ -1,10 +1,13 @@
+// Assumptions being made:
+// words are all stored as lowercase
+// only dealing with characters [a-z]
 export default class WordStore {
 	constructor() {
 		this.anagramMap = {}  // Map of words with values that are Sets of anagrams for that word
 		this.sizeMap = {}  // Map of sizes (length of word) with values that are Sets of words of matching size
 	}
 
-	getAnagrams(word: string, limit: number? = null): string[] {
+	public getAnagrams(word: string, limit: number? = null): string[] {
 		/* word: word to get anagrams for
 		 * limit: how many words to return (default null - return all)
 		 * return: array of anagrams for that word
@@ -21,7 +24,7 @@ export default class WordStore {
 		return anagramList  // Had an entry and no need to limit results
 	}
 
-	addWords(words: string[]) {
+	public addWords(words: string[]) {
 		words.forEach(word => {
 			word = word.toLowerCase()
 			if(this.anagramMap.word) return  // If we already have this word, skip it
@@ -51,7 +54,7 @@ export default class WordStore {
 		})
 	}
 
-	deleteWord(word: string) {
+	public deleteWord(word: string) {
 		word = word.toLowerCase()
 		// If we don't have the word, nothing to do
 		if(!this.anagramMap.word) return
@@ -68,14 +71,30 @@ export default class WordStore {
 		})
 	}
 
-	deleteAll() {
+	public deleteAll() {
 		this.anagramMap = {}
 		this.sizeMap = {}
 	}
 
-	// TODO: Implement this
-	areAnagrams(word1: string, word2: string): boolean {
-		// Returns whether word1 and word2 are anagrams of each other
-		return false
+	static areAnagrams(word1: string, word2: string): boolean {
+		// Returns whether word1 and word2 are anagrams of each other (compares length and character counts)
+
+		if(word1.length !== word2.length) return false
+
+		// Build the char count for word1
+		let charCounts = {}
+		[...word1].forEach(char => {
+			if(!charCounts[char]) charCounts[char] = 0
+			charCounts[char]++
+		})
+
+		// Decrement char counts for word2
+		[...word2].forEach(char => {
+			if(!charCounts[char]) charCounts[char] = 0
+			charCounts[char]--
+		})
+
+		// If all counts are zero they had the same characters and are anagrams
+		return Object.values(charCounts).every(count => count === 0)
 	}
 }
