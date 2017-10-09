@@ -44,6 +44,7 @@ export default class WordStore {
 
 		words.forEach(word => {
 			word = word.toLowerCase()
+			console.log('Adding word: ', word)
 			if(this.anagramMap[word]) return  // If we already have this word, skip it
 
 			// Don't have the word, so add it

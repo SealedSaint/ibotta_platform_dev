@@ -20,7 +20,8 @@
   "homepage": "https://github.com/SealedSaint/ibotta_platform_dev#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express": "^4.16.1"
+    "express": "^4.16.1",
+    "line-by-line": "^0.1.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
