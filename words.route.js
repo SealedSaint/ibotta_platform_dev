@@ -64,7 +64,7 @@ router.delete('/words/:word.json', (req, res) => {
 	// withAnagrams query param optionally deletes all anagrams of the word as well
 	try {
 		const word = req.params.word
-		let withAnagrams = req.params.withAnagrams
+		let withAnagrams = req.query.withAnagrams
 
 		// Validate withAnagrams query param
 		let validQPs = true
