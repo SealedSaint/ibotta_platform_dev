@@ -16,18 +16,18 @@ router.get('/anagrams/:word.json', (req, res) => {
 		const limit = req.query.limit
 
 		// If we have proper input
-		if(isProperWord(word) && !isNaN(parseInt(limit))) {
-			store.getAnagrams(word, limit)
-			res.json()
+		if(isProperWord(word) && (limit == null || !isNaN(parseInt(limit)))) {
+			const anagrams = store.getAnagrams(word, limit)
+			res.json({ anagrams })
 		}
 		else {
 			// Error with input
-
+			res.sendStatus(422)
 		}
 	}
 	catch(e) {
 		// Unexpected error
-
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
 
@@ -39,16 +39,16 @@ router.post('/words.json', (req, res) => {
 		// If we have proper input
 		if(isArray(words) && words.every(word => typeof word === 'string')) {
 			store.addWords(words)
-			res.json()
+			res.status(201).json('Words successfully added to the data store.')
 		}
 		else {
 			// Error with input
-
+			res.sendStatus(422)
 		}
 	}
 	catch(e) {
 		// Unexpected error
-
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
 
@@ -60,15 +60,16 @@ router.delete('/words/:word.json', (req, res) => {
 		// If we have proper input
 		if(isProperWord(word)) {
 			store.deleteWord(word)
-			res.json()
+			res.status(204).json('Word successfully deleted from data store.')
 		}
 		else {
 			// Error with input
+			res.sendStatus(422)
 		}
 	}
 	catch(e) {
 		// Unexpected error
-
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
 
@@ -76,11 +77,11 @@ router.delete('/words.json', (req, res) => {
 	try {
 		// Delete all words from the data store
 		store.deleteAll()
-		res.json()
+		res.status(204).json('All words successfully deleted from data store.')
 	}
 	catch(e) {
 		// Unexpected error
-		
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
 
