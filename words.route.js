@@ -37,13 +37,18 @@ router.post('/words.json', (req, res) => {
 		const words = req.body.words || req.body  // should be an array of strings
 
 		// If we have proper input
-		if(isArray(words) && words.every(word => typeof word === 'string')) {
+		if(isArray(words) && words.every(word => isProperWord(word))) {
 			store.addWords(words)
-			res.status(201).json('Words successfully added to the data store.')
+			res.status(201).send('Words successfully added to the data store.')
 		}
 		else {
 			// Error with input
-			res.sendStatus(422)
+			if(!isArray(words)) res.status(422).send("An array of words must be provided.")
+			else {  // A provided word was not proper
+				const improperWords = words.filter(word => !isProperWord(word))
+				res.status(422).send("The following words are not acceptable and cannot be processed: " +
+										JSON.stringify(improperWords) + ". No words were added.")
+			}
 		}
 	}
 	catch(e) {
@@ -60,7 +65,7 @@ router.delete('/words/:word.json', (req, res) => {
 		// If we have proper input
 		if(isProperWord(word)) {
 			store.deleteWord(word)
-			res.status(204).json('Word successfully deleted from data store.')
+			res.status(204).send('Word successfully deleted from data store.')
 		}
 		else {
 			// Error with input
@@ -77,7 +82,7 @@ router.delete('/words.json', (req, res) => {
 	try {
 		// Delete all words from the data store
 		store.deleteAll()
-		res.status(204).json('All words successfully deleted from data store.')
+		res.status(204).send('All words successfully deleted from data store.')
 	}
 	catch(e) {
 		// Unexpected error
