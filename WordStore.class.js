@@ -10,7 +10,8 @@ export default class WordStore {
 	}
 
 	getAnagrams(word, limit) {
-		/* word (string): word to get anagrams for
+		/* Returns a list of anagrams of the passed in word with an optional limit
+		 * word (string): word to get anagrams for
 		 * limit (number): how many words to return (default null - return all)
 		 * return (string[]): anagrams for that word
 		*/
@@ -39,7 +40,8 @@ export default class WordStore {
 	}
 
 	addWords(words) {
-		/* word (string[]): words to add to the store
+		/* Adds the provided words to the data store
+		 * word (string[]): words to add to the store
 		*/
 
 		words.forEach(word => {
@@ -47,49 +49,46 @@ export default class WordStore {
 			console.log('Adding word: ', word)
 			if(this.anagramMap[word]) return  // If we already have this word, skip it
 
-			// Don't have the word, so add it
+			// First get all anagrams of this word already in the store
+			const anagrams = this.getAnagrams(word)
+
+			// Add the new word to anagramMap and sizeMap
 			this.anagramMap[word] = new Set()
-			// We may or may not already have entries of this size, so init if not
-			if(!this.sizeMap[word.length]) this.sizeMap[word.length] = new Set()
-
-			// Grab words of same size before adding new word (a word is not its own anagram)
-			const sameSizeWords = Array.from(this.sizeMap[word.length])
-
-			// Now add the word to the size Set
 			this.sizeMap[word.length].add(word)
 
-			// Get all anagrams for the new word and populate its anagramMap
-			sameSizeWords.forEach(sameSizeWord => {
-				if(areAnagrams(word, sameSizeWord)) {
-					this.anagramMap[word].add(sameSizeWord)
-				}
-			})
-
-			// For each word found as an anagram, we need to add the new word to their lists
-			Array.from(this.anagramMap[word]).forEach(anagram => {
+			// For each word found as an anagram, we need to add them to each others' lists
+			anagrams.forEach(anagram => {
+				this.anagramMap[word].add(anagram)
 				this.anagramMap[anagram].add(word)
 			})
 		})
 	}
 
-	deleteWord(word) {
-		/* word (string): word to delete from store
+	deleteWord(word, withAnagrams) {
+		/* Deletes the provided word from the store and optionally all its anagrams too
+		 * word (string): word to delete from store
+		 * withAnagrams (boolean): whether or not to also delete all anagrams of the word (default false)
 		*/
 
 		word = word.toLowerCase()
-		// If we don't have the word, nothing to do
-		if(!this.anagramMap[word]) return
+		// Only attempt to delete the word if we have an entry for it
+		if(this.anagramMap[word]) {
+			// Remove the word from the sizeMap
+			this.sizeMap[word.length].delete(word)
 
-		// Remove the word from the sizeMap
-		this.sizeMap[word.length].delete(word)
+			// To remove from the anagramMap, we need to remove the word's own entry
+			// and also remove it from its anagrams' lists
+			const anagrams = Array.from(this.anagramMap[word])
+			delete this.anagramMap[word]
+			anagrams.forEach(anagram => {
+				this.anagramMap[anagram].delete(word)
+			})
+		}
 
-		// To remove from the anagramMap, we need to remove the word's own entry
-		// and also remove it from its anagrams' lists
-		const anagrams = Array.from(this.anagramMap[word])
-		delete this.anagramMap[word]
-		anagrams.forEach(anagram => {
-			this.anagramMap[anagram].delete(word)
-		})
+		// Look for anagrams and delete them too (if withAnagrams is true)
+		if(withAnagrams) {
+			this.getAnagrams(word).forEach(anagram => this.deleteWord(anagram))
+		}
 	}
 
 	deleteAll() {
@@ -97,6 +96,33 @@ export default class WordStore {
 		this.sizeMap = {}
 	}
 
+	getMetrics() {
+		/* Returns a count of words in the store and min, max, median, average word length
+		 * return (object): { count, min_length, max_length, median_length, average_length }
+		*/
+
+	}
+
+	getWordsWithMostAnagrams() {
+		/* Returns the word(s) in the store with the most anagrams
+		 * return (string[]): the word(s) with most anagrams
+		*/
+
+	}
+
+	getAnagramGroups(size) {
+		/* Returns all anagram groups of size >= {size}
+		 * return ([string[]]): an array of string arrays that are the anagram groups
+		*/
+
+	}
+}
+
+export function areAllAnagrams(words) {
+	/* Returns whether all the words are anagrams of each other
+	 * words (string[]): the words to be tested
+	 * return (boolean): whether the words are anagrams of each other
+	*/
 
 }
 

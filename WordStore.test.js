@@ -415,6 +415,43 @@ function testDeleteWord() {
 	}
 	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting a word that never existed in the store does nothing for anagramMap")
 	assert(mapsAreEqual(sizeMap, store.sizeMap), "Deleting a word that never existed in the store does nothing for sizeMap")
+
+	// Test withAnagrams option
+	store.deleteWord('dear', true)  // Word in store with anagrams
+	anagramMap = {
+		'computer': new Set(),
+		'flower': new Set(['fowler']),
+		'fowler': new Set(['flower']),
+		'foo': new Set()
+	}
+	sizeMap = {
+		1: new Set(),
+		3: new Set(['foo']),
+		4: new Set(),
+		6: new Set(['flower', 'fowler']),
+		8: new Set(['computer']),
+		9: new Set(),
+		26: new Set()
+	}
+	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting a word in the store (that has anagrams) using 'withAnagrams' option works as expected for anagramMap.")
+	assert(mapsAreEqual(sizeMap, store.sizeMap), "Deleting a word in the store (that has anagrams) using 'withAnagrams' option works as expected for sizeMap.")
+
+	store.deleteWord('flowre', true)  // Word not in store, but anagrams of word in store
+	anagramMap = {
+		'computer': new Set(),
+		'foo': new Set()
+	}
+	sizeMap = {
+		1: new Set(),
+		3: new Set(['foo']),
+		4: new Set(),
+		6: new Set(),
+		8: new Set(['computer']),
+		9: new Set(),
+		26: new Set()
+	}
+	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting a word NOT in the store (but anagrams of it are) using 'withAnagrams' option works as expected for anagramMap.")
+	assert(mapsAreEqual(sizeMap, store.sizeMap), "Deleting a word NOT in the store (but anagrams of it are) using 'withAnagrams' option works as expected for sizeMap.")
 }
 testDeleteWord()
 

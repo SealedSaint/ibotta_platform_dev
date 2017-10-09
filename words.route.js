@@ -61,12 +61,27 @@ router.post('/words.json', (req, res) => {
 
 router.delete('/words/:word.json', (req, res) => {
 	// Delete the passed in word from the data store
+	// withAnagrams query param optionally deletes all anagrams of the word as well
 	try {
 		const word = req.params.word
+		let withAnagrams = req.params.withAnagrams
+
+		// Validate withAnagrams query param
+		let validQPs = true
+		if(withAnagrams == null) withAnagrams = false
+		else {
+			withAnagrams = withAnagrams.toLowerCase()
+			if(withAnagrams !== 'true' && withAnagrams !== 'false') {
+				validQPs = false
+			}
+			else {
+				withAnagrams = (withAnagrams === 'true')
+			}
+		}
 
 		// If we have proper input
-		if(isProperWord(word)) {
-			store.deleteWord(word)
+		if(isProperWord(word) && validQPs) {
+			store.deleteWord(word, withAnagrams)
 			res.status(204).send('Word successfully deleted from data store.')
 		}
 		else {
