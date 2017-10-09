@@ -1,4 +1,4 @@
-// Assumptions being made:
+// ASSUMPTIONS:
 // words are non-empty strings
 // words are all stored as lowercase
 // only dealing with characters [a-z]
@@ -16,11 +16,23 @@ export default class WordStore {
 		*/
 
 		word = word.toLowerCase()
-		const anagramSet = this.anagramMap[word]
+		let anagramSet = this.anagramMap[word]
 
-		if(!anagramSet) return []  // No entry for that word
+		let anagramList = []
+		if(anagramSet) {  // Convert our set into an array
+			anagramList = Array.from(anagramSet)
+		}
+		else {  // No entry for that word, but we might still have anagrams for it...
+			// We may or may not already have entries of this size, so init if not
+			if(!this.sizeMap[word.length]) this.sizeMap[word.length] = new Set()
 
-		const anagramList = Array.from(anagramSet)
+			const sameSizeWords = Array.from(this.sizeMap[word.length])
+			sameSizeWords.forEach(sameSizeWord => {
+				if(areAnagrams(word, sameSizeWord)) {
+					anagramList.push(sameSizeWord)
+				}
+			})
+		}
 
 		if(limit != null) return anagramList.slice(0, limit)  // Had an entry but need to limit results
 		return anagramList  // Had an entry and no need to limit results

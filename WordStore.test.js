@@ -237,12 +237,19 @@ function testGetAnagrams() {
 	expected.sort()
 	assert(JSON.stringify(anagrams) === JSON.stringify(expected), "An empty list is returned for a word in the store with no anagrams")
 
-	// Word not in the store
+	// Word not in the store with no anagrams
 	anagrams = store.getAnagrams('befuzzled')
 	anagrams.sort()
 	expected = []
 	expected.sort()
 	assert(JSON.stringify(anagrams) === JSON.stringify(expected), "An empty list is returned for a word not in the store")
+
+	// Word not in the store but WITH anagrams
+	anagrams = store.getAnagrams('eard')
+	anagrams.sort()
+	expected = ['read', 'dear', 'dare']
+	expected.sort()
+	assert(JSON.stringify(anagrams) === JSON.stringify(expected), "Getting anagrams for a word not in the store still works.")
 
 	// Word with new size
 	anagrams = store.getAnagrams('flower')
@@ -294,6 +301,7 @@ function testDeleteWord() {
 		4: new Set(['read', 'dear', 'dare']),
 		6: new Set(['flower', 'fowler']),
 		8: new Set(['computer']),
+		9: new Set(),
 		26: new Set(['abcdefghijklmnopqrstuvwxyz'])
 	}
 	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting 'a' worked correctly for anagramMap")
@@ -316,6 +324,7 @@ function testDeleteWord() {
 		4: new Set(['read', 'dear', 'dare']),
 		6: new Set(['flower', 'fowler']),
 		8: new Set(['computer']),
+		9: new Set(),
 		26: new Set(['abcdefghijklmnopqrstuvwxyz'])
 	}
 	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting 'new' worked correctly for anagramMap")
@@ -337,6 +346,7 @@ function testDeleteWord() {
 		4: new Set(['dear', 'dare']),
 		6: new Set(['flower', 'fowler']),
 		8: new Set(['computer']),
+		9: new Set(),
 		26: new Set(['abcdefghijklmnopqrstuvwxyz'])
 	}
 	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting 'read' worked correctly for anagramMap")
@@ -357,6 +367,7 @@ function testDeleteWord() {
 		4: new Set(['dear', 'dare']),
 		6: new Set(['flower', 'fowler']),
 		8: new Set(['computer']),
+		9: new Set(),
 		26: new Set()
 	}
 	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting 'abcdefghijklmnopqrstuvwxyz' worked correctly for anagramMap")
@@ -378,6 +389,7 @@ function testDeleteWord() {
 		4: new Set(['dear', 'dare']),
 		6: new Set(['flower', 'fowler']),
 		8: new Set(['computer']),
+		9: new Set(),
 		26: new Set()
 	}
 	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting a word that was already deleted does nothing for anagramMap")
@@ -398,6 +410,7 @@ function testDeleteWord() {
 		4: new Set(['dear', 'dare']),
 		6: new Set(['flower', 'fowler']),
 		8: new Set(['computer']),
+		9: new Set(),
 		26: new Set()
 	}
 	assert(mapsAreEqual(anagramMap, store.anagramMap), "Deleting a word that never existed in the store does nothing for anagramMap")
