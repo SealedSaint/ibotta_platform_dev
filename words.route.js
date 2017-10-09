@@ -34,7 +34,7 @@ router.get('/anagrams/:word.json', (req, res) => {
 router.post('/words.json', (req, res) => {
 	// Add the words from the array to the data store
 	try {
-		const words = req.body  // should be an array of strings
+		const words = req.body.words || req.body  // should be an array of strings
 
 		// If we have proper input
 		if(isArray(words) && words.every(word => typeof word === 'string')) {
