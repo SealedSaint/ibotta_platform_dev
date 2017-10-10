@@ -1,6 +1,17 @@
 # Ibotta Take-Home Project: Anagram API
 Take-home project for Ibotta dev position where I create an anagram API.
 
+## Table of Contents
+- [About the API](#about-the-api)
+- [Getting Started](#getting-started)
+- [Endpoints](#endpoints)
+    - [Get Anagrams](#get-anagrams)
+    - [Get Metrics](#get-metrics)
+    - [Add Words](#add-words)
+    - [Are All Anagrams](#are-all-anagrams)
+    - [Delete Word](#delete-word)
+    - [Delete All Words](#delete-all-words)
+
 ## About the API
 The API endpoints provide access to a data store of words.
 Words can be added to and deleted from this data store using the API.
