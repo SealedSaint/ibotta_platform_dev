@@ -464,6 +464,9 @@ function testDeleteAll() {
 }
 testDeleteAll()
 
+// Check getMetrics
+
+
 console.log("================")
 console.log("ALL TESTS PASSED")
 console.log("================")

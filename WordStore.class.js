@@ -100,7 +100,62 @@ export default class WordStore {
 		/* Returns a count of words in the store and min, max, median, average word length
 		 * return (object): { count, min_length, max_length, median_length, average_length }
 		*/
+		const count = Object.keys(this.anagramMap).length
 
+		if(count === 0) {
+			return {
+				count: 0,
+				min_length: null,
+				max_length: null,
+				median_length: null,
+				average_length: null
+			}
+		}
+
+		let sizes = Object.keys(this.sizeMap)
+		sizes.sort()
+		const min_length = sizes.length === 0 ? null : sizes[0]
+		const max_length = sizes.length === 0 ? null : sizes.slice(-1).pop()
+
+		// For median: using count, sizes, and sizeMap we should be able to calculate
+		// For even, average of count/2 and count/2 + 1 values
+		// For odd, Math.ceil(count/2) value
+		let median_length
+		let n = 0
+		let sizeIndex = 0
+		const target_n = Math.ceil(count/2)
+		while(median_length == null) {
+			const nextSize = sizes[sizeIndex]
+			const sizeCount = Array.from(this.sizeMap[nextSize]).length
+			if(n + sizeCount >= target_n) {
+				// This size is the median (with a few exceptions)
+				if(count % 2 === 0) {  // Even, so need to get average
+					if(n + sizeCount > target_n) {  // average will be between two values of nextSize (just nextSize)
+						median_length = nextSize
+					}
+					else {  // this sizeCount put us right on the target_n, so average this size and the next
+						const nextNextSize = sizes[sizeIndex+1]
+						median_length = (nextSize + nextNextSize) / 2
+					}
+					break
+				}
+				else {  // Odd, so no need to get average
+					median_length = nextSize
+					break
+				}
+			}
+
+			// Not to the middle point yet, so keep moving
+			n += sizeCount
+			sizeIndex++
+		}
+
+		// For average: use sizeMap to add up lengths, then divide by count
+		const totalLength = sizes.map(size => Array.from(this.sizeMap[size]).length * size)  // Map sizes to total length of words of that size
+			.reduce((sum, sizeTotal) => sum + sizeTotal, 0)  // Add the totals for each word size together (this should result in total length of all words in store)
+		const average_length = totalLength / count
+
+		return { count, min_length, max_length, median_length, average_length }
 	}
 
 	getWordsWithMostAnagrams() {
