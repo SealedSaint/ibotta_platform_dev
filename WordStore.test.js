@@ -510,6 +510,7 @@ testMetricsAreEqual()
 
 // Check getMetrics
 function testGetMetrics() {
+	store.deleteAll()
 	// Test no words in store
 	let metrics = store.getMetrics()
 	let expected = {

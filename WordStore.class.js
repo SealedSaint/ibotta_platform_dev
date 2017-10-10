@@ -126,7 +126,7 @@ export default class WordStore {
 		const target_n = Math.ceil(count/2)
 		while(median_length == null) {
 			const nextSize = sizes[sizeIndex]
-			const sizeCount = Array.from(this.sizeMap[nextSize]).length
+			const sizeCount = this.sizeMap[nextSize].size
 			if(n + sizeCount >= target_n) {
 				// This size is the median (with a few exceptions)
 				if(count % 2 === 0) {  // Even, so need to get average
@@ -152,25 +152,11 @@ export default class WordStore {
 		median_length = median_length
 
 		// For average: use sizeMap to add up lengths, then divide by count
-		const totalLength = sizes.map(size => Array.from(this.sizeMap[size]).length * size)  // Map sizes to total length of words of that size
+		const totalLength = sizes.map(size => this.sizeMap[size].size * size)  // Map sizes to total length of words of that size
 			.reduce((sum, sizeTotal) => sum + sizeTotal, 0)  // Add the totals for each word size together (this should result in total length of all words in store)
 		const average_length = totalLength / count
 
 		return { count, min_length, max_length, median_length, average_length }
-	}
-
-	getWordsWithMostAnagrams() {
-		/* Returns the word(s) in the store with the most anagrams
-		 * return (string[]): the word(s) with most anagrams
-		*/
-
-	}
-
-	getAnagramGroups(size) {
-		/* Returns all anagram groups of size >= {size}
-		 * return ([string[]]): an array of string arrays that are the anagram groups
-		*/
-
 	}
 }
 

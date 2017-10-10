@@ -10,9 +10,9 @@ function isArray(arr) {
 const store = new WordStore()
 
 const router = express.Router()
-// Needs optional query param for limit to return
+
 router.get('/anagrams/:word.json', (req, res) => {
-	// Get anagrams for the passed in word
+	// Get anagrams for the passed in word, limited by the "limit" QP if provided
 	try {
 		const word = req.params.word
 		const limit = req.query.limit
@@ -174,7 +174,5 @@ router.delete('/words.json', (req, res) => {
 		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
-
-
 
 export default router
