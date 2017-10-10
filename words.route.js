@@ -1,7 +1,7 @@
 import fs from 'fs'
 import express from 'express'
 import LineReader from 'line-by-line'
-import WordStore, { isProperWord } from './WordStore.class.js'
+import WordStore, { areAllAnagrams, isProperWord } from './WordStore.class.js'
 
 function isArray(arr) {
 	return typeof arr === 'object' && arr.length != null
@@ -29,6 +29,7 @@ router.get('/anagrams/:word.json', (req, res) => {
 	}
 	catch(e) {
 		// Unexpected error
+		console.error(e)
 		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
@@ -40,6 +41,7 @@ router.get('/words/metrics.json', (req, res) => {
 	}
 	catch(e) {
 		// Unexpected error
+		console.error(e)
 		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
@@ -66,6 +68,34 @@ router.post('/words.json', (req, res) => {
 	}
 	catch(e) {
 		// Unexpected error
+		console.error(e)
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
+	}
+})
+
+router.post('/are-all-anagrams', (req, res) => {
+	// Test whether all the provided words are anagrams of each other
+	try {
+		const words = req.body.words || req.body  // should be an array of strings of length >= 2
+
+		// If we have proper input
+		if(isArray(words) && words.every(word => isProperWord(word)) && words.length >= 2) {
+			res.json(areAllAnagrams(words))
+		}
+		else {
+			// Error with input
+			if(!isArray(words)) res.status(422).send("An array of words must be provided.")
+			else if(words.length < 2) res.status(422).send("At least two words must be provided.")
+			else {  // A provided word was not proper
+				const improperWords = words.filter(word => !isProperWord(word))
+				res.status(422).send("The following words are not acceptable and cannot be processed: " +
+										JSON.stringify(improperWords) + ".")
+			}
+		}
+	}
+	catch(e) {
+		// Unexpected error
+		console.error(e)
 		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
@@ -90,6 +120,7 @@ router.put('/load-dictionary/english', (req, res) => {
 	}
 	catch(e) {
 		// Unexpected error
+		console.error(e)
 		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
@@ -126,6 +157,7 @@ router.delete('/words/:word.json', (req, res) => {
 	}
 	catch(e) {
 		// Unexpected error
+		console.error(e)
 		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })
@@ -138,6 +170,7 @@ router.delete('/words.json', (req, res) => {
 	}
 	catch(e) {
 		// Unexpected error
+		console.error(e)
 		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
 	}
 })

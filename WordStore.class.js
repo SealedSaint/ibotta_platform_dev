@@ -176,10 +176,16 @@ export default class WordStore {
 
 export function areAllAnagrams(words) {
 	/* Returns whether all the words are anagrams of each other
+	 * Note: it's assumed words will have length >= 2
 	 * words (string[]): the words to be tested
 	 * return (boolean): whether the words are anagrams of each other
 	*/
+	return words.reduce((allAreAnagrams, word, index) => {
+		if(index === 0) return true
 
+		const lastWord = words[index-1]
+		return areAnagrams(word, lastWord) && allAreAnagrams
+	}, true)
 }
 
 export function areAnagrams(word1, word2) {

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import WordStore, { areAnagrams, isProperWord } from './WordStore.class.js'
+import WordStore, { areAnagrams, areAllAnagrams, isProperWord } from './WordStore.class.js'
 
 function mapsAreEqual(map1, map2) {
 	// Same keys
@@ -543,8 +543,6 @@ function testGetMetrics() {
 		median_length: 2.5,
 		average_length: 2.5
 	}
-	console.log(metrics)
-	console.log(expected)
 	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with two words in the store")
 
 	// Test 3 words in store
@@ -560,6 +558,14 @@ function testGetMetrics() {
 	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with three words in the store")
 }
 testGetMetrics()
+
+function testAreAllAnagrams() {
+	assert(areAllAnagrams(['read', 'dear', 'dare']), "Three anagrams are correctly identified.")
+	assert(!areAllAnagrams(['read', 'dear', 'dare', 'food']), "Three anagrams with another non-anagram returns false.")
+	assert(!areAllAnagrams(['a', 'foo', 'dare']), "Three non-angrams returns false.")
+	assert(!areAllAnagrams(['read', 'dear', 'computer', 'putcomer']), "Two pairs of anagrams returns false.")
+}
+testAreAllAnagrams()
 
 console.log("================")
 console.log("ALL TESTS PASSED")
