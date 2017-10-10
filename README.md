@@ -1,5 +1,5 @@
 # Ibotta Take-Home Project: Anagram API
-Take-home project for Ibotta dev position where I create an anagram API.
+An anagram API for an Ibotta take-home project.
 
 ## Table of Contents
 - [About the API](#about-the-api)
