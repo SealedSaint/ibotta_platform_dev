@@ -33,6 +33,17 @@ router.get('/anagrams/:word.json', (req, res) => {
 	}
 })
 
+router.get('/words/metrics.json', (req, res) => {
+	// Get metrics for the words in the data store
+	try {
+		res.json(store.getMetrics())
+	}
+	catch(e) {
+		// Unexpected error
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
+	}
+})
+
 router.post('/words.json', (req, res) => {
 	// Add the words from the array to the data store
 	try {
@@ -52,6 +63,30 @@ router.post('/words.json', (req, res) => {
 										JSON.stringify(improperWords) + ". No words were added.")
 			}
 		}
+	}
+	catch(e) {
+		// Unexpected error
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
+	}
+})
+
+router.put('/load-dictionary/english', (req, res) => {
+	try {
+		let words = []
+
+		const lr = new LineReader('./dictionary.txt')
+		lr.on('error', err => {
+			res.status(500).send('Unexpected error. Unable to process dictionary file.')
+			lr.close()
+		})
+		lr.on('line', line => {
+			if(isProperWord(line)) words.push(line)
+		})
+		lr.on('end', () => {
+			console.log('Done reading dictionary - time to add words to store')
+			store.addWords(words)
+			res.status(201).send('Entire English dictionary has successfully been loaded into the store.')
+		})
 	}
 	catch(e) {
 		// Unexpected error
@@ -107,28 +142,6 @@ router.delete('/words.json', (req, res) => {
 	}
 })
 
-router.put('/load-dictionary/english', (req, res) => {
-	try {
-		let words = []
 
-		const lr = new LineReader('./dictionary.txt')
-		lr.on('error', err => {
-			res.status(500).send('Unexpected error. Unable to process dictionary file.')
-			lr.close()
-		})
-		lr.on('line', line => {
-			if(isProperWord(line)) words.push(line)
-		})
-		lr.on('end', () => {
-			console.log('Done reading dictionary - time to add words to store')
-			store.addWords(words)
-			res.status(201).send('Entire English dictionary has successfully been loaded into the store.')
-		})
-	}
-	catch(e) {
-		// Unexpected error
-		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
-	}
-})
 
 export default router
