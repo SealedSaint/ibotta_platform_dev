@@ -65,3 +65,52 @@ POST /words.json
 Body:
 { "words": ["dear", "dare", "read"] }
 ```
+
+### Are All Anagrams
+`POST /are-all-anagrams`
+
+Determines whether all the provided words are anagrams of each other.
+- Required Body: (string[]) - the words to be tested
+- Returns: (boolean) - whether all the words are anagrams of each other
+- Note: The array may also be provided through an object with a key of "words".
+
+Examples:
+
+```
+POST /are-all-anagrams
+Body:
+["dear", "dare", "read"]
+```
+- Result: `true`
+
+```
+POST /are-all-anagrams
+Body:
+{ "words": ["dear", "dare", "read"] }
+```
+- Result: `true`
+
+```
+POST /are-all-anagrams
+Body:
+["dear", "a", "read"]
+```
+- Result: `false`
+
+### Delete Word
+`DELETE /words/:word.json?withAnagrams=false`
+
+The provided word is removed from the data store, with an option to also remove its anagrams.
+- Required Url Param: "word" (string) - the word to be removed from the data store
+- Optional Query Param: "withAnagrams" (boolean) - if true, the word's anagrams will also be removed from the store [default: false]
+
+Examples:
+
+`DELETE /words/read.json`
+
+`DELETE /words/dare.json?withAnagrams=true`
+
+### Delete All Words
+`DELETE /words.json`
+
+All words are deleted from the data store.
