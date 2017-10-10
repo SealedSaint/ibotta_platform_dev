@@ -112,7 +112,7 @@ export default class WordStore {
 			}
 		}
 
-		let sizes = Object.keys(this.sizeMap)
+		let sizes = Object.keys(this.sizeMap).map(size => parseInt(size))
 		sizes.sort()
 		const min_length = sizes.length === 0 ? null : sizes[0]
 		const max_length = sizes.length === 0 ? null : sizes.slice(-1).pop()
@@ -149,6 +149,7 @@ export default class WordStore {
 			n += sizeCount
 			sizeIndex++
 		}
+		median_length = median_length
 
 		// For average: use sizeMap to add up lengths, then divide by count
 		const totalLength = sizes.map(size => Array.from(this.sizeMap[size]).length * size)  // Map sizes to total length of words of that size

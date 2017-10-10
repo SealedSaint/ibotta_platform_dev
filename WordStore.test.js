@@ -464,8 +464,102 @@ function testDeleteAll() {
 }
 testDeleteAll()
 
-// Check getMetrics
+// Helper function for getMetrics test_deleting_all_words
+function metricsAreEqual(m1, m2) {
+	return m1.count === m2.count &&
+		m1.min_length === m2.min_length &&
+		m1.max_length === m2.max_length &&
+		m1.median_length === m2.median_length &&
+		m1.average_length === m2.average_length
+}
 
+function testMetricsAreEqual() {
+	let m1 = {
+		count: 0,
+		min_length: null,
+		max_length: null,
+		median_length: null,
+		average_length: null
+	}
+	let m2 = {
+		count: 0,
+		min_length: null,
+		max_length: null,
+		median_length: null,
+		average_length: null
+	}
+	assert(metricsAreEqual(m1, m2), "Metrics object equality works even with null values")
+
+	m1 = {
+		count: 10,
+		min_length: 1,
+		max_length: 6,
+		median_length: 3.5,
+		average_length: 3.2
+	}
+	m2 = {
+		count: 10,
+		min_length: 1,
+		max_length: 6,
+		median_length: 3.5,
+		average_length: 3.2
+	}
+	assert(metricsAreEqual(m1, m2), "Metrics object equality works with normal values (including floating point)")
+}
+testMetricsAreEqual()
+
+// Check getMetrics
+function testGetMetrics() {
+	// Test no words in store
+	let metrics = store.getMetrics()
+	let expected = {
+		count: 0,
+		min_length: null,
+		max_length: null,
+		median_length: null,
+		average_length: null
+	}
+	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with no words in the store")
+
+	// Test 1 word in store
+	store.addWords(['read'])
+	metrics = store.getMetrics()
+	expected = {
+		count: 1,
+		min_length: 4,
+		max_length: 4,
+		median_length: 4,
+		average_length: 4
+	}
+	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with one word in the store")
+
+	// Test 2 words in store
+	store.addWords(['a'])
+	metrics = store.getMetrics()
+	expected = {
+		count: 2,
+		min_length: 1,
+		max_length: 4,
+		median_length: 2.5,
+		average_length: 2.5
+	}
+	console.log(metrics)
+	console.log(expected)
+	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with two words in the store")
+
+	// Test 3 words in store
+	store.addWords(['b'])
+	metrics = store.getMetrics()
+	expected = {
+		count: 3,
+		min_length: 1,
+		max_length: 4,
+		median_length: 1,
+		average_length: 2
+	}
+	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with three words in the store")
+}
+testGetMetrics()
 
 console.log("================")
 console.log("ALL TESTS PASSED")
