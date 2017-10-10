@@ -44,3 +44,24 @@ Examples:
     "average_length": 3.25
 }
 ```
+
+### Add Words
+`POST /words.json`
+
+The provided words are added to the data store.
+- Required Body: (string[]) - the words to be added to the data store
+- Note: The array may also be provided through an object with a key of "words".
+
+Examples:
+
+```
+POST /words.json
+Body:
+["dear", "dare", "read"]
+```
+
+```
+POST /words.json
+Body:
+{ "words": ["dear", "dare", "read"] }
+```
