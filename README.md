@@ -6,6 +6,33 @@ The API endpoints provide access to a data store of words.
 Words can be added to and deleted from this data store using the API.
 Anagrams can be fetched for a given word, and results from the data store will be returned.
 
+## Getting Started
+
+### For Ibotta: Using the Cloud Instance
+Ibotta team, I have hosted this API on one of my AWS Lightsail servers.
+
+It can be accessed at `18.220.164.93:3000`.
+
+You shouldn't need to do anything with the files in the repo, but the documentation about the API endpoints below may be useful to you.
+
+### Working with the Repo
+This API uses Node. Make sure you have Node installed, then run the following commands:
+```
+npm install
+npm run test
+```
+If you get errors you might need an updated version of Node. I built this using v7.8.0.
+
+Once the tests are passing you can start the server with `npm run start`. It will host the service on port 3000 (configurable in "index.js").
+
+#### The Files
+- **index.js** - The entry-point for the server
+- **words.route.js** - The route definitions for the API
+- **WordStore.class.js** - The bulk of the logic is found here, the class that represents the data store.
+- **WordStore.test.js** - Test file for logic in the WordStore class (and helper functions in that file). Called by `npm run test` command.
+- **dictionary.txt.gz** - Compressed text file of all words in the English dictionary.
+- **anagram_test.rb** - Test file that tests routes using an HTTP client in "anagram_client.rb". Run test using command `ruby anagram_test.rb` (requires ruby).
+
 ## Endpoints
 
 ### Get Anagrams
