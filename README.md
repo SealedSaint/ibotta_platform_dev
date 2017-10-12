@@ -21,7 +21,7 @@ The API endpoints provide access to a data store of words.
 Words can be added to and deleted from this data store using the API.
 Anagrams can be fetched for a given word, and results from the data store will be returned.
 
-The [Load from File](#load-from-file) endpoint makes it quick and easy to load the English dictionary into the data store.
+The [Load from File](#load-from-file) endpoint makes it quick and easy to load the English dictionary into the data store. This is often a good starting point.
 
 ### Inherent Assumptions
 There are a few inherent assumptions being made in the API logic a user should be aware of:
