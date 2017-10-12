@@ -23,6 +23,17 @@ Anagrams can be fetched for a given word, and results from the data store will b
 
 The [Load from File](#load-from-file) endpoint makes it quick and easy to load the English dictionary into the data store. This is often a good starting point.
 
+### Technically...
+The data store uses two different data structures: an `anagramMap` and a `sizeMap`.
+
+**anagramMap**
+- The `anagramMap` contains the words in the store as keys with values equal to the [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) of anagrams for that word.
+- This data structure allows for fast anagram searching.
+
+**sizeMap**
+- The `sizeMap` contains the length (size) of words as keys with values equal to the [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) of words with that length.
+- This data structure allows for quicker word addition to the store (to `anagramMap`, specifically). Since anagrams are determined by words being the same size and containing the same characters, when a new word is added to the store we already know which words to test for same-character-ness.
+
 ### Inherent Assumptions
 There are a few inherent assumptions being made in the API logic a user should be aware of:
 - Words are considered valid as determined through the `isProperWord` function in "WordStore.class.js". Users are informed when "improper" words are provided, and processing will not take place. Words are "proper" according to the following criteria:
@@ -33,9 +44,9 @@ There are a few inherent assumptions being made in the API logic a user should b
 ## Getting Started
 
 ### For Ibotta: Using the Cloud Instance
-Ibotta team, I have hosted this API on one of my AWS Lightsail servers.
+Ibotta team,
 
-It can be accessed at `18.220.164.93:3000`.
+I have hosted this API on one of my AWS Lightsail servers. It can be accessed at `18.220.164.93:3000`.
 
 The store has already been initialized with the English dictionary through the [Load from File](#load-from-file) endpoint. If you need to load the dictionary again (maybe after deleting all words), you can use this endpoint again. It only takes about a second to load.
 
@@ -56,7 +67,7 @@ Once the tests are passing you can start the server with `npm run start`. It wil
 - **words.route.js** - The route definitions for the API
 - **WordStore.class.js** - The bulk of the logic is found here, the class that represents the data store.
 - **WordStore.test.js** - Test file for logic in the WordStore class (and helper functions in that file). Called by `npm run test` command.
-- **dictionary.txt.gz** - Compressed text file of all words in the English dictionary.
+- **dictionary.txt.gz** - Compressed text file of all words in the English dictionary. *You shouldn't need to use this. See the next two files.*
 - **anagramMap.json** - Converted json representation of the English dictionary for faster loading (words and their anagrams).
 - **sizeMap.json** - Converted json representation of the English dictionary for faster loading (word-lengths and the words).
 - **anagram_test.rb** - Test file that tests routes using an HTTP client in "anagram_client.rb". Run test using command `ruby anagram_test.rb` (requires ruby). This test file assumes the service is hosted locally on port 3000.
