@@ -112,8 +112,9 @@ export default class WordStore {
 			}
 		}
 
-		let sizes = Object.keys(this.sizeMap).map(size => parseInt(size))
-		sizes.sort()
+		let sizes = Object.keys(this.sizeMap).map(size => parseInt(size))  // The keys are strings, and we want numbers
+		sizes.sort((a, b) => a - b)  // Sort by number not string
+		
 		const min_length = sizes.length === 0 ? null : sizes[0]
 		const max_length = sizes.length === 0 ? null : sizes.slice(-1).pop()
 
@@ -153,7 +154,7 @@ export default class WordStore {
 
 		// For average: use sizeMap to add up lengths, then divide by count
 		const totalLength = sizes.map(size => this.sizeMap[size].size * size)  // Map sizes to total length of words of that size
-			.reduce((sum, sizeTotal) => sum + sizeTotal, 0)  // Add the totals for each word size together (this should result in total length of all words in store)
+			.reduce((sum, sizeTotal) => sum + sizeTotal)  // Add the totals for each word size together (this should result in total length of all words in store)
 		const average_length = totalLength / count
 
 		return { count, min_length, max_length, median_length, average_length }
