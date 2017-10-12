@@ -3,7 +3,10 @@ An anagram API for an Ibotta take-home project.
 
 ## Table of Contents
 - [About the API](#about-the-api)
+    - [Inherent Assumptions](#inherent-assumptions)
 - [Getting Started](#getting-started)
+    - [For Ibotta](#for-ibotta-using-the-cloud-instance)
+    - [Working with the Repo](#working-with-the-repo)
 - [Endpoints](#endpoints)
     - [Get Anagrams](#get-anagrams)
     - [Get Metrics](#get-metrics)
@@ -18,6 +21,15 @@ The API endpoints provide access to a data store of words.
 Words can be added to and deleted from this data store using the API.
 Anagrams can be fetched for a given word, and results from the data store will be returned.
 
+The [Load from File](#load-from-file) endpoint makes it quick and easy to load the English dictionary into the data store.
+
+### Inherent Assumptions
+There are a few inherent assumptions being made in the API logic a user should be aware of:
+- Words are considered valid as determined through the `isProperWord` function in "WordStore.class.js". Users are informed when "improper" words are provided, and processing will not take place. Words are "proper" according to the following criteria:
+    - Words are non-empty strings
+    - Lowercased words only contain characters [a-z]
+- Words in the store are all lowercase. All words passed through the API are dealt with in lowercase only.
+
 ## Getting Started
 
 ### For Ibotta: Using the Cloud Instance
@@ -25,7 +37,9 @@ Ibotta team, I have hosted this API on one of my AWS Lightsail servers.
 
 It can be accessed at `18.220.164.93:3000`.
 
-You shouldn't need to do anything with the files in the repo, but the documentation about the API endpoints below may be useful to you.
+The store has already been initialized with the English dictionary through the [Load from File](#load-from-file) endpoint. If you need to load the dictionary again (maybe after deleting all words), you can use this endpoint again. It only takes about a second to load.
+
+You shouldn't need to do anything with the files in the repo, but the documentation about the [API endpoints](#endpoints) below may be useful to you.
 
 ### Working with the Repo
 This API uses Node. Make sure you have Node installed, then run the following commands:
