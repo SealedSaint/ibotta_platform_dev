@@ -74,6 +74,7 @@ Once the tests are passing you can start the server with `npm run start`. It wil
 - **anagram_test.rb** - Test file that tests routes using an HTTP client in "anagram_client.rb". Run test using command `ruby anagram_test.rb` (requires ruby). This test file assumes the service is hosted locally on port 3000.
 
 ## Endpoints
+The available HTTP endpoints for the API are listed below. A convenient Postman collection of these calls can be obtained here: [https://www.getpostman.com/collections/144a1147680e8e61a39c](https://www.getpostman.com/collections/144a1147680e8e61a39c) (you might need the Chrome Postman extension installed for the link to work).
 
 ### Get Anagrams
 
