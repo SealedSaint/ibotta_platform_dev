@@ -5,7 +5,7 @@ An anagram API for an Ibotta take-home project.
 - [About the API](#about-the-api)
     - [Inherent Assumptions](#inherent-assumptions)
 - [Getting Started](#getting-started)
-    - [For Ibotta](#for-ibotta-using-the-cloud-instance)
+    - [For Ibotta: Using the Cloud Instance](#for-ibotta-using-the-cloud-instance)
     - [Working with the Repo](#working-with-the-repo)
 - [Endpoints](#endpoints)
     - [Get Anagrams](#get-anagrams)
