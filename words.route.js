@@ -101,6 +101,7 @@ router.post('/are-all-anagrams', (req, res) => {
 })
 
 router.put('/load-dictionary/english', (req, res) => {
+	// Loads english dictionary words from dictionary.txt
 	try {
 		let words = []
 
@@ -113,9 +114,72 @@ router.put('/load-dictionary/english', (req, res) => {
 			if(isProperWord(line)) words.push(line)
 		})
 		lr.on('end', () => {
-			console.log('Done reading dictionary - time to add words to store')
 			store.addWords(words)
 			res.status(201).send('Entire English dictionary has successfully been loaded into the store.')
+		})
+	}
+	catch(e) {
+		// Unexpected error
+		console.error(e)
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
+	}
+})
+
+router.put('/write-to-file', (req, res) => {
+	// Writes the contents of the data store to two files - one for anagramMap, and one for sizeMap
+	try {
+		let anagramMap = {}
+		let sizeMap = {}
+
+		// Convert the Sets to arrays for JSON stringify step
+		Object.keys(store.anagramMap).forEach(key => {
+			anagramMap[key] = Array.from(store.anagramMap[key])
+		})
+		Object.keys(store.sizeMap).forEach(key => {
+			sizeMap[key] = Array.from(store.sizeMap[key])
+		})
+
+		// Write each map to a file
+		fs.writeFile('anagramMap.json', JSON.stringify(anagramMap), err => {
+			if (err) throw err;
+
+			fs.writeFile('sizeMap.json', JSON.stringify(sizeMap), err => {
+				if (err) throw err;
+
+				res.send('Store contents have been saved.')
+			});
+		});
+	}
+	catch(e) {
+		// Unexpected error
+		console.error(e)
+		res.status(500).send('Oops, something went wrong on our end. If the problem persists, the server may need to be restarted.')
+	}
+})
+
+router.put('/load-from-file', (req, res) => {
+	// Loads store state anagramMap and sizeMap from files anagramMap.json and sizeMap.json
+	try {
+		fs.readFile('anagramMap.json', (err, data) => {
+			if(err) throw err
+
+			let anagramMap = JSON.parse(data)
+			Object.keys(anagramMap).forEach(key => {
+				anagramMap[key] = new Set(anagramMap[key])
+			})
+			store.anagramMap = anagramMap
+
+			fs.readFile('sizeMap.json', (err, data) => {
+				if(err) throw err
+
+				let sizeMap = JSON.parse(data)
+				Object.keys(sizeMap).forEach(key => {
+					sizeMap[key] = new Set(sizeMap[key])
+				})
+				store.sizeMap = sizeMap
+
+				res.send('File contents have been loaded into the store.')
+			})
 		})
 	}
 	catch(e) {
