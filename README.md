@@ -9,6 +9,7 @@ An anagram API for an Ibotta take-home project.
     - [Get Metrics](#get-metrics)
     - [Add Words](#add-words)
     - [Are All Anagrams](#are-all-anagrams)
+    - [Load from File](#load-from-file)
     - [Delete Word](#delete-word)
     - [Delete All Words](#delete-all-words)
 
@@ -42,7 +43,9 @@ Once the tests are passing you can start the server with `npm run start`. It wil
 - **WordStore.class.js** - The bulk of the logic is found here, the class that represents the data store.
 - **WordStore.test.js** - Test file for logic in the WordStore class (and helper functions in that file). Called by `npm run test` command.
 - **dictionary.txt.gz** - Compressed text file of all words in the English dictionary.
-- **anagram_test.rb** - Test file that tests routes using an HTTP client in "anagram_client.rb". Run test using command `ruby anagram_test.rb` (requires ruby).
+- **anagramMap.json** - Converted json representation of the English dictionary for faster loading (words and their anagrams).
+- **sizeMap.json** - Converted json representation of the English dictionary for faster loading (word-lengths and the words).
+- **anagram_test.rb** - Test file that tests routes using an HTTP client in "anagram_client.rb". Run test using command `ruby anagram_test.rb` (requires ruby). This test file assumes the service is hosted locally on port 3000.
 
 ## Endpoints
 
@@ -134,6 +137,11 @@ Body:
 ["dear", "a", "read"]
 ```
 - Result: `false`
+
+### Load from File
+`PUT /load-from-file`
+
+Loads the English dictionary into memory through "anagramMap.json" and "sizeMap.json" files at the root.
 
 ### Delete Word
 `DELETE /words/:word.json?withAnagrams=false`
