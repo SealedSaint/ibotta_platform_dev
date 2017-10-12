@@ -557,6 +557,19 @@ function testGetMetrics() {
 		average_length: 2
 	}
 	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with three words in the store")
+
+
+	// Test long word in the store
+	store.addWords(['abcdefghijabcdefghij'])  // 20 characters long
+	metrics = store.getMetrics()
+	expected = {
+		count: 4,
+		min_length: 1,
+		max_length: 20,
+		median_length: 2.5,
+		average_length: 6.5
+	}
+	assert(metricsAreEqual(metrics, expected), "Metrics work as expected with a really long word in the store.")
 }
 testGetMetrics()
 
