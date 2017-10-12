@@ -3,6 +3,7 @@ An anagram API for an Ibotta take-home project.
 
 ## Table of Contents
 - [About the API](#about-the-api)
+    - [Technically...](#technically)
     - [Inherent Assumptions](#inherent-assumptions)
 - [Getting Started](#getting-started)
     - [For Ibotta: Using the Cloud Instance](#for-ibotta-using-the-cloud-instance)
